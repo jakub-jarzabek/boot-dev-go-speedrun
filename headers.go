@@ -25,6 +25,7 @@ func getAuthToken(r *http.Request) (string, error) {
 	if len(s) != 2 {
 		return "", errors.New("Invalid Authorization header")
 	}
+
 	return s[1], nil
 
 }

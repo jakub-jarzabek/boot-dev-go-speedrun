@@ -14,6 +14,7 @@ type apiConfig struct {
 	fileserverHits int
 	DB             *database.DB
 	jwtSecret      string
+	apiKey         string
 }
 
 func main() {
@@ -32,11 +33,13 @@ func main() {
 	}
 
 	jwtSecret := os.Getenv("JWT_SECRET")
+	apiKey := os.Getenv("API_KEY")
 
 	apiCfg := apiConfig{
 		fileserverHits: 0,
 		DB:             db,
 		jwtSecret:      jwtSecret,
+		apiKey:         apiKey,
 	}
 
 	mux := http.NewServeMux()

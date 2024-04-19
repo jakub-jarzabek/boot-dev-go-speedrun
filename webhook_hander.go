@@ -15,17 +15,23 @@ func (cfg *apiConfig) webhook(w http.ResponseWriter, r *http.Request) {
 		Data  Data   `json:"data"`
 	}
 
+	apiKey, err := getAuthToken(r)
+
+	if err != nil || apiKey != cfg.apiKey {
+		respondWithError(w, http.StatusUnauthorized, "Unauthorized")
+	}
+
 	decoder := json.NewDecoder(r.Body)
 	params := parameters{}
-	err := decoder.Decode(&params)
+	err = decoder.Decode(&params)
 
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Couldn't decode parameters")
-    return
+		return
 	}
 	if params.Event != "user.upgraded" {
 		respondWithJSON(w, http.StatusOK, "Not a user.upgraded event")
-    return
+		return
 	}
 
 	if err != nil {
