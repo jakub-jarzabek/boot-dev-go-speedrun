@@ -1,7 +1,9 @@
 package main
 
 import (
+	"errors"
 	"net/http"
+	"strings"
 )
 
 func middlewareCors(next http.Handler) http.Handler {
@@ -15,4 +17,14 @@ func middlewareCors(next http.Handler) http.Handler {
 		}
 		next.ServeHTTP(w, r)
 	})
+}
+
+func getAuthToken(r *http.Request) (string, error) {
+	authHeader := r.Header.Get("Authorization")
+	s := strings.Split(authHeader, " ")
+	if len(s) != 2 {
+		return "", errors.New("Invalid Authorization header")
+	}
+	return s[1], nil
+
 }

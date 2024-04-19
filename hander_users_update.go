@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"net/http"
-	"strings"
 )
 
 func (cfg *apiConfig) handlerUsersUpdate(w http.ResponseWriter, r *http.Request) {
@@ -12,8 +11,14 @@ func (cfg *apiConfig) handlerUsersUpdate(w http.ResponseWriter, r *http.Request)
 		Password string `json:"password"`
 	}
 
-	authHeader := r.Header.Get("Authorization")
-	token := strings.Split(authHeader, " ")[1]
+
+	token, err := getAuthToken(r)
+
+	if err != nil {
+		respondWithError(w, 401, "Unauthorized")
+
+	}
+
 
 	id, err := validateAccessToken(token, cfg.jwtSecret)
 

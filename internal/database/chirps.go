@@ -1,21 +1,25 @@
 package database
 
 type Chirp struct {
-	ID   int    `json:"id"`
-	Body string `json:"body"`
+	ID       int    `json:"id"`
+	Body     string `json:"body"`
+	AuthorID int    `json:"author_id"`
 }
 
-func (db *DB) CreateChirp(body string) (Chirp, error) {
+func (db *DB) CreateChirp(body string, authorId int) (Chirp, error) {
 	dbStructure, err := db.loadDB()
 	if err != nil {
 		return Chirp{}, err
 	}
 
 	id := len(dbStructure.Chirps) + 1
+
 	chirp := Chirp{
-		ID:   id,
-		Body: body,
+		ID:       id,
+		Body:     body,
+		AuthorID: authorId,
 	}
+
 	dbStructure.Chirps[id] = chirp
 
 	err = db.writeDB(dbStructure)
@@ -32,9 +36,11 @@ func (db *DB) GetChirps() ([]Chirp, error) {
 		return nil, err
 	}
 
-	chirps := make([]Chirp, 0, len(dbStructure.Chirps))
+	chirps := []Chirp{}
 	for _, chirp := range dbStructure.Chirps {
+		// if chirp.AuthorID == authorId {
 		chirps = append(chirps, chirp)
+		// }
 	}
 
 	return chirps, nil
@@ -50,6 +56,25 @@ func (db *DB) GetChirp(id int) (Chirp, error) {
 	if !ok {
 		return Chirp{}, ErrNotExist
 	}
+
+	return chirp, nil
+}
+
+func (db *DB) DeleteChirp(id int) (Chirp, error) {
+	dbStructure, err := db.loadDB()
+	if err != nil {
+		return Chirp{}, err
+	}
+
+	chirp, ok := dbStructure.Chirps[id]
+	if !ok {
+		return Chirp{}, ErrNotExist
+	}
+
+
+	delete(dbStructure.Chirps, id)
+
+	db.writeDB(dbStructure)
 
 	return chirp, nil
 }
