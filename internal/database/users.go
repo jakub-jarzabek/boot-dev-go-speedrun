@@ -16,6 +16,7 @@ func (db *DB) CreateUser(email, password string) (User, error) {
 	if err != nil {
 		return User{}, err
 	}
+
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 
 	if err != nil {
@@ -51,6 +52,30 @@ func (db *DB) GetUser(id int) (User, error) {
 	}
 
 	return user, nil
+}
+
+func (db *DB) UpdateUser(id int, email, password string) (User, error) {
+	dbStructure, err := db.loadDB()
+	if err != nil {
+		return User{}, err
+	}
+
+	user, ok := dbStructure.Users[id]
+	if !ok {
+		return User{}, ErrNotExist
+	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return User{}, err
+	}
+	userPointer := &user
+	userPointer.Email = email
+	userPointer.Password = string(hash)
+  dbStructure.Users[id] = *userPointer
+	db.writeDB(dbStructure)
+
+	return *userPointer, nil
 }
 
 func (db *DB) GetUserByEmail(email string) (User, error) {

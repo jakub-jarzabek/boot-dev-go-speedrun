@@ -1,1 +1,1 @@
-{"chirps":{},"users":{"1":{"id":1,"email":"mloneusk@example.co"},"2":{"id":2,"email":"dackjorsey@example.co"}}}
+{"chirps":{},"users":{"1":{"id":1,"email":"chuck@bettercall.com","password":"$2a$10$l/3IURCjp9pBOv0404SD2uxJQnlo1wBhqb.sp0Vp96LAEKuaerXcm"}},"RevokedTokens":["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjaGlycHktcmVmcmVzaCIsInN1YiI6IjEiLCJleHAiOjE3MTg3MTU5MTIsImlhdCI6MTcxMzUzMTkxMn0.P9H7lzuJ5ZPE0RkBDU0DXJrsZ_kB_KidFRU8LYECRh4"]}
