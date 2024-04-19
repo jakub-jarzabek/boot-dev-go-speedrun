@@ -1,1 +1,1 @@
-{"chirps":{},"users":{"1":{"id":1,"email":"walt@breakingbad.com","password":"$2a$10$2W1l3iRtTHXEkYH7usFDoubCVd4J7GrWty3jLlAuzUYYlzRtuesKm"},"2":{"id":2,"email":"skyler@breakingbad.com","password":"$2a$10$B6wKazdcfFA4uhAVeK1h2.17Cq5TXo9ptDpMhfrhJF20WqA5c6KWO"}},"RevokedTokens":[]}
+{"chirps":{},"users":{"1":{"id":1,"email":"walt@breakingbad.com","password":"$2a$10$tCXcf8H4YyONL9WzYsyP.Oi3IGl49X4xI5LEpC2eBhlUpkK2V8aPu","is_chirpy_red":true}},"RevokedTokens":[]}

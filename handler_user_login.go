@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
@@ -12,6 +13,7 @@ type UserWithToken struct {
 	RefreshToken string `json:"refresh_token"`
 	Email        string `json:"email"`
 	ID           int    `json:"id"`
+	IsChirpyRed  bool   `json:"is_chirpy_red"`
 }
 
 func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, r *http.Request) {
@@ -47,12 +49,15 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, 500, "Couldn't sign token")
 		return
 	}
-
-	respondWithJSON(w, 200, UserWithToken{
+	usr := UserWithToken{
 		ID:           user.ID,
 		Email:        user.Email,
 		Token:        signedAccess,
 		RefreshToken: signedRefresh,
-	})
+		IsChirpyRed:  user.IsChirpyRed,
+	}
+  log.Print(usr)
+
+	respondWithJSON(w, 200,usr)
 
 }

@@ -3,12 +3,11 @@ package main
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
 )
 
 func (cfg *apiConfig) webhook(w http.ResponseWriter, r *http.Request) {
 	type Data struct {
-		UserId string `json:"user_id"`
+		UserId int `json:"user_id"`
 	}
 
 	type parameters struct {
@@ -22,21 +21,29 @@ func (cfg *apiConfig) webhook(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Couldn't decode parameters")
+    return
 	}
 	if params.Event != "user.upgraded" {
 		respondWithJSON(w, http.StatusOK, "Not a user.upgraded event")
+    return
 	}
 
-	userId, err := strconv.Atoi(params.Data.UserId)
 	if err != nil {
 		respondWithError(w, http.StatusBadRequest, "Invalid user ID")
 		return
 	}
 
-	_, err = cfg.DB.GetUser(userId)
+	_, err = cfg.DB.GetUser(params.Data.UserId)
 
 	if err != nil {
 		respondWithError(w, 404, "User not found")
+		return
+	}
+
+	_, err = cfg.DB.UpgradeUser(params.Data.UserId)
+
+	if err != nil {
+		respondWithError(w, 501, "Failed to upgrade user")
 		return
 	}
 

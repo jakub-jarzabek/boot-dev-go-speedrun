@@ -54,6 +54,7 @@ func main() {
 	mux.HandleFunc("PUT /api/users", apiCfg.handlerUsersUpdate)
 	mux.HandleFunc("POST /api/refresh", apiCfg.handlerRefresh)
 	mux.HandleFunc("POST /api/revoke", apiCfg.handlerRevoke)
+	mux.HandleFunc("POST /api/polka/webhooks", apiCfg.webhook)
 
 	mux.HandleFunc("GET /admin/metrics", apiCfg.handlerMetrics)
 
